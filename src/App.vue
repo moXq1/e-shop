@@ -1,7 +1,11 @@
 <template>
-  <the-header></the-header>
-  <main></main>
-  <the-footer></the-footer>
+  <div class="wrapper">
+    <the-header></the-header>
+    <main>
+      <router-view></router-view>
+    </main>
+    <the-footer></the-footer>
+  </div>
 </template>
 
 <script>
@@ -24,8 +28,9 @@ export default {
 }
 
 main {
-  height: 100vh;
-  width: 100%;
+  height: auto;
+  width: 100vw;
+  margin-top: 5rem;
 }
 
 html {
@@ -37,5 +42,26 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  grid-template-columns: minmax(10px, 1fr);
+  gap: 2rem;
+}
+
+*::-webkit-scrollbar {
+  width: 0.3em;
+  height: 0.3em;
+}
+
+*::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #151515;
+  outline: 1px solid slategrey;
 }
 </style>

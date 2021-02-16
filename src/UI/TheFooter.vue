@@ -104,7 +104,7 @@
     cursor: pointer;
     & img {
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: cover;
       filter: invert(52%) sepia(26%) saturate(807%) hue-rotate(47deg)
         brightness(98%) contrast(96%);
