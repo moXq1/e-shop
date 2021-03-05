@@ -109,6 +109,7 @@ export default {
   overflow-y: hidden;
   scroll-padding: 1rem;
   padding: 1.5rem 0rem 3rem 2rem;
+  max-width: 94rem;
 
   gap: 2rem;
   //   scroll-snap-type: x;
@@ -134,6 +135,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 3rem;
 }
 
 .review {

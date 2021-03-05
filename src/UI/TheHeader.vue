@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="nav">
+    <nav class="nav" :class="{ nn: $route.path.includes('account') }">
       <div class="nav__info">
         <a class="nav__link nav__link--active" href="#">Chat with us</a>
         <p class="nav__contact">+420 336 775 664</p>
@@ -13,8 +13,14 @@
       </div>
     </nav>
     <div class="head">
-      <div class="head__logo">Freshnesecom</div>
-      <div class="head__categories">
+      <div
+        class="head__logo"
+        :class="{ log: $route.path.includes('account') }"
+        @click="move"
+      >
+        Freshnesecom
+      </div>
+      <div v-if="!$route.path.includes('account')" class="head__categories">
         <label class="head__label head__label--select" for="select">
           <select id="select">
             <option value="value1"> 1</option>
@@ -26,22 +32,57 @@
         <label class="head__label">
           <input type="text" placeholder="Search Products,categories&hellip;" />
           <div class="head__search">
-            <img src="../assets/search-outline.svg" alt="" />
+            <img src="../assets/search-outline.svg" alt="search icon" />
           </div>
         </label>
       </div>
-      <div class="head__icons">
-        <div class="head__icon">
-          <img src="../assets/person-outline.svg" alt="person icon" />
+      <div
+        class="head__icons"
+        :class="{ acc: $route.path.includes('account') }"
+      >
+        <div class="head__icon" @click="account">
+          <img
+            :class="{ logged: loggedIn }"
+            src="../assets/person-outline.svg"
+            alt="person icon"
+          />
         </div>
-        <div class="head__icon head__icon--count">
-          <div class="head__count">0</div>
+        <div class="head__icon head__icon--count" @click="showCart = true">
+          <div v-if="count > 0" class="head__count">{{ count }}</div>
           <img src="../assets/basket-outline.svg" alt="basket icon" />
         </div>
       </div>
     </div>
   </header>
+  <modal-cart :showCart="showCart" @close="showCart = false"></modal-cart>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      showCart: false,
+    };
+  },
+
+  computed: {
+    count() {
+      return this.$store.getters["basketNum"];
+    },
+    loggedIn() {
+      return this.$store.getters["isAuthenticated"];
+    },
+  },
+  methods: {
+    move() {
+      this.$router.push("/");
+    },
+    account() {
+      this.$router.push("/auth");
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 header {
@@ -51,6 +92,11 @@ header {
   display: grid;
   place-content: center;
   grid-template-columns: 1fr;
+}
+
+.logged {
+  filter: invert(40%) sepia(36%) saturate(1969%) hue-rotate(340deg)
+    brightness(86%) contrast(87%);
 }
 
 .head {
@@ -172,7 +218,7 @@ header {
 
     & img {
       width: 100%;
-       height: auto;
+      height: auto;
       object-fit: cover;
     }
   }
@@ -276,6 +322,9 @@ header {
       display: none;
     }
   }
+  .nn {
+    padding: 3rem 0 1rem 0;
+  }
 
   .head {
     display: grid;
@@ -296,6 +345,15 @@ header {
       }
     }
   }
+}
+.acc {
+  grid-row: 1/1;
+  grid-column: 2/3;
+}
+.log {
+  grid-row: 1/1;
+  grid-column: 1/2;
+  justify-self: start;
 }
 
 @media (max-width: 549px) {

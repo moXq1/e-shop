@@ -12,6 +12,9 @@
 export default {
   name: "App",
   components: {},
+  created() {
+    this.$store.dispatch("autoLogin");
+  },
 };
 </script>
 
@@ -30,7 +33,10 @@ export default {
 main {
   height: auto;
   width: 100vw;
-  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
 }
 
 html {
