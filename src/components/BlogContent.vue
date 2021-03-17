@@ -1,7 +1,7 @@
 <template>
   <article class="post" v-if="post && !isLoading">
     <div class="post__img">
-      <img width="200" height='200' :src="post.postImg" alt="Post image" />
+      <img width="200" height="200" :src="post.postImg" alt="Post image" />
     </div>
 
     <h3 class="post__title">{{ post.title }}</h3>
@@ -32,12 +32,12 @@ export default {
     this.isLoading = true;
     if (!this.post) {
       const resp = await fetch(
-        `https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/posts/${this.id}.json`
+        `${this.$store.getters["dbUrl"]}/posts/${this.id}.json`
       );
       const respData = await resp.json();
       this.$store.dispatch("setPost", respData);
-      this.isLoading = false;
     }
+    this.isLoading = false;
   },
   props: ["id"],
   data() {

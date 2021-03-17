@@ -36,6 +36,7 @@ export default {
 
     async addPost(context, payload) {
       let url = context.rootGetters.dbUrl;
+
       try {
         const res = await fetch(
           `${url}/posts.json?auth=${context.rootGetters.token}`,

@@ -1,5 +1,5 @@
 <template>
-  <section v-blogs class="blog" v-if="!isLoading">
+  <section class="blog" v-if="!isLoading">
     <div class="blog__head">
       <h3 v-if="posts.length !== 0">Read our Blog posts</h3>
       <h3 v-else>No data access,just template</h3>
@@ -190,9 +190,7 @@ import p3 from "../assets/brooke-lark-M4E7X3z80PQ-unsplash.jpg";
 import p4 from "../assets/dan-gold-4_jhDO54BYg-unsplash.jpg";
 import p5 from "../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg";
 
-import blogs from "../directives/blogs.js";
 export default {
-  directives: { blogs },
   data() {
     return {
       backPosts: [
@@ -243,10 +241,9 @@ export default {
     };
   },
   async created() {
-    console.log(this.posts);
-    // this.isLoading = true;
-    // await this.$store.dispatch("getPosts");
-    // this.isLoading = false;
+    this.isLoading = true;
+    await this.$store.dispatch("getPosts");
+    this.isLoading = false;
   },
   computed: {
     posts() {
