@@ -190,7 +190,9 @@ import p3 from "../assets/brooke-lark-M4E7X3z80PQ-unsplash.jpg";
 import p4 from "../assets/dan-gold-4_jhDO54BYg-unsplash.jpg";
 import p5 from "../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg";
 
+import blogs from "../directives/blogs.js";
 export default {
+  directives: { blogs },
   data() {
     return {
       backPosts: [
@@ -241,9 +243,10 @@ export default {
     };
   },
   async created() {
-    this.isLoading = true;
-    await this.$store.dispatch("getPosts");
-    this.isLoading = false;
+    console.log(this.posts);
+    // this.isLoading = true;
+    // await this.$store.dispatch("getPosts");
+    // this.isLoading = false;
   },
   computed: {
     posts() {
