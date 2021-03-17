@@ -14,6 +14,10 @@ export default {
   components: {},
   created() {
     this.$store.dispatch("autoLogin");
+    let b = localStorage.getItem("basket");
+    if (b) {
+      this.$store.dispatch("setBasket", JSON.parse(b));
+    }
   },
 };
 </script>

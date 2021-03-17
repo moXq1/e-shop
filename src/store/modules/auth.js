@@ -33,7 +33,6 @@ export default {
   },
   actions: {
     async login(context, payload) {
-      console.log(1);
       context.dispatch("auth", { ...payload, mode: "login" });
     },
     async signup(context, payload) {
@@ -73,7 +72,7 @@ export default {
         name: payload.name,
         email: payload.email,
       };
-      console.log(user);
+
       if (payload.mode === "signup") {
         const res = await fetch(
           `https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/users/${respData.localId}.json`,
@@ -88,13 +87,11 @@ export default {
         }
       }
 
-      const expirationDate =
-        new Date().getTime() + Number(respData.expiresIn) * 100000;
+      const expirationDate = new Date().getTime() + Number(respData.expiresIn);
 
       localStorage.setItem("token", respData.token);
       localStorage.setItem("userId", respData.localId);
       localStorage.setItem("tokenExpiration", expirationDate);
-      console.log(expirationDate);
 
       timer = setTimeout(() => {
         context.dispatch("autoLogout");

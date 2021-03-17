@@ -4,10 +4,12 @@ export default {
     return {
       products: [
         {
-          title: "Product Title 4234 fsdfs 42fsdf",
+          title: "Bread",
           description: "Space for a small product description",
+          bigDescription: ` Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus
+          molestiae vel beatae natus eveniet ratione temporibus aperiam harum alias  officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus!`,
           price: "12.48",
-          img: require("../../assets/brooke-lark-1Rm9GLHV0UA-unsplash.jpg"),
+          img: require("../../assets/victoria-shes-IUk1S6n2s0o-unsplash.jpg"),
           onSale: false,
           discount: 30,
           type: "bakery",
@@ -16,10 +18,12 @@ export default {
           id: "p1",
         },
         {
-          title: "Product Title",
+          title: "Croissant",
           description: "Space for a small product description",
+          bigDescription: ` Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus
+          molestiae vel beatae natus eveniet ratione temporibus aperiam harum alias  officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus!`,
           price: "32.48",
-          img: require("../../assets/brooke-lark-1Rm9GLHV0UA-unsplash.jpg"),
+          img: require("../../assets/mahyar-motebassem-123wTsGP4LU-unsplash.jpg"),
           onSale: true,
           discount: 30,
           type: "bakery",
@@ -28,10 +32,12 @@ export default {
           id: "p2",
         },
         {
-          title: "Product Title",
+          title: "Cookies",
           description: "Space for a small product description",
+          bigDescription: ` Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus
+          molestiae vel beatae natus eveniet ratione temporibus aperiam harum alias  officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus!`,
           price: "6.48",
-          img: require("../../assets/brooke-lark-1Rm9GLHV0UA-unsplash.jpg"),
+          img: require("../../assets/mae-mu-kID9sxbJ3BQ-unsplash.jpg"),
           onSale: true,
           discount: 30,
           type: "bakery",
@@ -40,22 +46,26 @@ export default {
           id: "p3",
         },
         {
-          title: "Product Title",
+          title: "Spoon",
           description: "Space for a small product description",
+          bigDescription: ` Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus
+          molestiae vel beatae natus eveniet ratione temporibus aperiam harum alias  officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus!`,
           price: "1.48",
-          img: require("../../assets/brooke-lark-1Rm9GLHV0UA-unsplash.jpg"),
+          img: require("../../assets/hue12-photography-rScZlwNBezc-unsplash.jpg"),
           onSale: true,
           discount: 30,
-          type: "bakery",
+          type: "kitchen",
           rating: 1.5,
           brand: "a",
           id: "p4",
         },
         {
-          title: "Product Title",
+          title: "Brread",
           description: "Space for a small product description",
+          bigDescription: ` Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus
+          molestiae vel beatae natus eveniet ratione temporibus aperiam harum alias  officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus!`,
           price: "12.48",
-          img: require("../../assets/brooke-lark-1Rm9GLHV0UA-unsplash.jpg"),
+          img: require("../../assets/victoria-shes-IUk1S6n2s0o-unsplash.jpg"),
           onSale: true,
           discount: 30,
           type: "bakery",
@@ -64,10 +74,12 @@ export default {
           id: "p5",
         },
         {
-          title: "Product Title",
+          title: "BBread",
           description: "Space for a small product description",
+          bigDescription: ` Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus
+          molestiae vel beatae natus eveniet ratione temporibus aperiam harum alias  officiis assumenda officia quibusdam deleniti eos cupiditate dolore doloribus!`,
           price: "1.48",
-          img: require("../../assets/brooke-lark-1Rm9GLHV0UA-unsplash.jpg"),
+          img: require("../../assets/victoria-shes-IUk1S6n2s0o-unsplash.jpg"),
           onSale: true,
           discount: 30,
           type: "bakery",
@@ -78,11 +90,15 @@ export default {
       ],
       items: 3,
       basket: {},
+      curProduct: {},
     };
   },
   getters: {
     products(state) {
       return state.products;
+    },
+    curProduct(state) {
+      return state.curProduct;
     },
     productsMainPage(state) {
       if (state.products.length > state.items) {
@@ -115,6 +131,12 @@ export default {
       }, 0);
     },
     basket(state) {
+      console.log(1);
+      //const bas = localStorage.getItem("basket");
+      // if (bas) {
+      //   console.log(bas);
+      //   state.basket = JSON.parse(bas);
+      // }
       return state.basket;
     },
   },
@@ -123,11 +145,29 @@ export default {
       state.items = payload;
     },
 
+    setCurProduct(state, payload) {
+      state.curProduct = payload;
+    },
+
     addToBasket(state, payload) {
       state.basket[payload.id] = { ...payload };
+      if (localStorage.getItem("basket")) {
+        localStorage.removeItem("basket");
+      }
+      localStorage.setItem("basket", JSON.stringify(state.basket));
+    },
+    setBasket(state, payload) {
+      localStorage.removeItem("basket");
+
+      state.basket = payload;
+      localStorage.setItem("basket", JSON.stringify(state.basket));
     },
     removeFromBasket(state, payload) {
       delete state.basket[payload];
+      if (localStorage.getItem("basket")) {
+        localStorage.removeItem("basket");
+      }
+      localStorage.setItem("basket", JSON.stringify(state.basket));
     },
     updateCount(state, payload) {
       state.basket[payload.id].count = parseInt(payload.value);
@@ -148,8 +188,23 @@ export default {
         }
       }
     },
+
+    addToBasketPr(context, payload) {
+      if (payload.id in context.state.basket) {
+        context.commit("addToBasket", {
+          ...payload,
+          count: context.state.basket[payload.id].count + payload.count,
+        });
+      } else {
+        context.commit("addToBasket", { ...payload });
+      }
+    },
+
     removeFromBasket(context, payload) {
       context.commit("removeFromBasket", payload);
+    },
+    setBasket(context, payload) {
+      context.commit("setBasket", payload);
     },
     updateCount(context, payload) {
       if (payload.value <= 0) {
@@ -157,6 +212,12 @@ export default {
       } else {
         context.commit("updateCount", { ...payload });
       }
+    },
+
+    setCurProduct(context, id) {
+      const prod = context.state.products.find((el) => el.id === id);
+
+      context.commit("setCurProduct", prod);
     },
   },
 };

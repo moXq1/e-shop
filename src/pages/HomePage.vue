@@ -45,7 +45,7 @@ export default {
     return {
       allLinks: [
         { name: "Bakery", to: `/products/` },
-        { name: "Bakery", to: `/products/` },
+        { name: "Kitchen", to: `/products/` },
         { name: "Bakery", to: `/products/` },
         { name: "Bakery", to: `/products/` },
         { name: "Bakery", to: `/products/` },

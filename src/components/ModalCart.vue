@@ -60,7 +60,7 @@
           <span>Total Price:</span> <strong>USD {{ total }} </strong>
         </div>
         <div class="cart__checkout">
-          <base-button to="/" mode="secondary">Check out</base-button>
+          <base-button to="/booking" mode="secondary">Check out</base-button>
           <base-button :isBtn="false" @click.prevent="closeCart"
             >Back to Shopping</base-button
           >

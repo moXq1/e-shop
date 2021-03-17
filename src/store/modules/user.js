@@ -31,7 +31,12 @@ export default {
       //const respData = await resp.json();
       localStorage.removeItem("user");
       localStorage.setItem("user", JSON.stringify(payload.user));
+
       context.commit("loadUser", payload.user);
+      await context.dispatch("updatePostData", {
+        author: payload.user.name,
+        authorAvatar: payload.user.img,
+      });
     },
     async loadUser(context, payload) {
       const savedUser = localStorage.getItem("user");

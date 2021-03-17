@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div class="product" :data-id="id">
+    <div class="product" :data-id="id" @click="watchDetails">
       <div class="product__image">
         <span v-if="onSale" class="product__percentage">- {{ discount }}%</span>
         <div class="product__placeholder">
@@ -23,7 +23,7 @@
             >
           </div>
 
-          <base-button @click="addItem" mode="secondary" :isBtn="true"
+          <base-button @click.stop="addItem" mode="secondary" :isBtn="true"
             >Buy now</base-button
           >
         </div>
@@ -52,6 +52,10 @@ export default {
 
       this.$store.dispatch("addToBasket", { ...data });
     },
+    watchDetails(e) {
+      let t = e.target.closest(".product").dataset.id;
+      this.$router.push(`/product/${t}`);
+    },
   },
 };
 </script>
@@ -66,6 +70,14 @@ export default {
   align-items: start;
   gap: 0.7rem;
   height: 20rem;
+  cursor: pointer;
+  transition: transform 0.5s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-7px);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 7px 0px;
+  }
+
   &__image {
     width: 14rem;
     height: 10rem;

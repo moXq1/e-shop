@@ -63,13 +63,29 @@
       <div class="sitemap">
         <ul>
           <li>
-            <a href="#" class="sitemap__link">About us</a>
+            <a href="#" class="sitemap__link sitemap__link--notActive"
+              >About us</a
+            >
           </li>
-          <li><a class="sitemap__link" href="#">Careers</a></li>
-          <li><a class="sitemap__link" href="#">Blog</a></li>
-          <li><a class="sitemap__link" href="#">Account</a></li>
-          <li><a class="sitemap__link" href="#">Chat with us</a></li>
-          <li><a class="sitemap__link" href="#">Help</a></li>
+          <li>
+            <a class="sitemap__link sitemap__link--notActive" href="#"
+              >Careers</a
+            >
+          </li>
+          <li>
+            <router-link class="sitemap__link" to="/posts">Blog</router-link>
+          </li>
+          <li>
+            <router-link class="sitemap__link" to="/auth">Account</router-link>
+          </li>
+          <li>
+            <router-link class="sitemap__link" to="/contact"
+              >Chat with us</router-link
+            >
+          </li>
+          <li>
+            <a class="sitemap__link sitemap__link--notActive" href="#">Help</a>
+          </li>
         </ul>
       </div>
       <div class="copyright">
@@ -139,6 +155,15 @@
 
     &:hover {
       color: #c8deb3;
+    }
+
+    &--notActive {
+      color: #303030;
+      cursor: not-allowed;
+
+      &:hover {
+        color: #303030;
+      }
     }
   }
 }

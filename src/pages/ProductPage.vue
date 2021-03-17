@@ -1,128 +1,196 @@
 <template>
-  <section class="productsPage">
-    <side-filter :products="products" @filt="filt"></side-filter>
-    <div class="products-container">
-      <product-list :categoryProducts="curProducts"></product-list>
+  <section class="prod">
+    <div class="prod__img">
+      <img :src="prod.img" alt="product img" />
     </div>
-    <div class="pages">
-      <span
-        @click="changePage"
-        v-for="(n, index) in pages"
-        :key="n"
-        :data-page="index"
-        :class="{ 'active-page': index === 0 }"
-        >{{ n }}</span
+    <div class="prod__info">
+      <base-button class="prod__b" mode="flat" to="/products"
+        >Back to Product List</base-button
       >
+      <div class="prod__desc">
+        <h1 class="prod__title">{{ prod.title }}</h1>
+        <p class="prod__txt">{{ prod.bigDescription }}</p>
+        <p class="prod__price">
+          USD
+          <strong
+            >${{
+              prod.onSale
+                ? (prod.price * (prod.discount / 100)).toFixed(2)
+                : prod.price
+            }}</strong
+          >
+        </p>
+      </div>
+
+      <div class="prod__toBasket">
+        <label class="prod__label">
+          Qty.
+          <input min="1" type="number" name="qty" v-model="num" />
+        </label>
+        <base-button @click="addToBasket" :isBtn="true" mode="secondary">
+          Add to cart</base-button
+        >
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-import ProductList from "../components/ProductList.vue";
-import SideFilter from "../components/SideFilter.vue";
 export default {
-  components: { ProductList, SideFilter },
+  props: ["id"],
   data() {
     return {
-      pages: 0,
-      curPage: 0,
-      itemsPerPage: 4,
-      curProducts: [],
-      prod: [],
+      num: 1,
     };
   },
-  methods: {
-    changePage(e) {
-      this.curPage = +e.target.dataset.page;
-      let pages = e.target.closest(".pages");
-      pages.querySelector(".active-page").classList.remove("active-page");
-      pages
-        .querySelector(`span[data-page="${this.curPage}"]`)
-        .classList.add("active-page");
-      this.curProducts = this.prod.slice(
-        this.curPage * this.itemsPerPage,
-        this.itemsPerPage * (this.curPage + 1)
-      );
-    },
-    filt(data) {
-      this.curPage = 0;
-      this.prod = data;
-      this.curProducts = this.prod.slice(
-        this.curPage * this.itemsPerPage,
-        this.itemsPerPage * (this.curPage + 1)
-      );
-    },
-  },
-  created() {
-    this.pages = Math.ceil(this.products.length / this.itemsPerPage);
-  },
   mounted() {
-    this.prod = this.products;
-    this.curProducts = this.prod.slice(
-      this.curPage * this.itemsPerPage,
-      this.itemsPerPage
-    );
+    this.load();
+  },
+  watch: {
+    "$route.params.id": function(id) {
+      this.load(id);
+    },
   },
   computed: {
-    products() {
-      return this.$store.getters["products"].filter(
-        (el) => (el.type = this.id)
-      );
+    prod() {
+      return this.$store.getters["curProduct"];
     },
   },
-  props: ["id"],
+  methods: {
+    addToBasket() {
+      this.$store.dispatch("addToBasketPr", { ...this.prod, count: +this.num });
+    },
+    load(id) {
+      if (id) {
+        this.$store.dispatch("setCurProduct", id);
+      } else {
+        this.$store.dispatch("setCurProduct", this.id);
+      }
+    },
+  },
 };
 </script>
 
-<style lang="scss">
-.productsPage {
-  width: 100%;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: clamp(13rem, 20vw, 20rem) minmax(10px, max-content);
-  place-content: center;
-}
-
-.products-container {
-  justify-self: center;
-}
-
-.active-page {
-  color: tomato;
-}
-.pages {
+<style lang="scss" scoped>
+.prod {
   display: flex;
-  gap: 2rem;
-  margin-left: 3rem;
-  margin-top: 2rem;
-  color: #6a983c;
-  place-self: center;
+  width: 100%;
+  justify-content: center;
+  padding: 0 3rem;
+  align-items: center;
+  color: #303030;
 
-  & span {
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.5s ease;
-    &:hover {
-      color: tomato;
+  &__price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #27262699;
+    letter-spacing: 0.02em;
+    & strong {
+      font-size: 1.55rem;
+
+      letter-spacing: 0.02em;
+      color: #303030;
+      margin-left: 7px;
+    }
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    & input {
+      border: none;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border: 2px solid #46760a;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__toBasket {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__info {
+    max-width: 480px;
+
+    min-height: 490px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 3rem;
+    color: #303030;
+    font-weight: 500;
+    line-height: 3rem;
+  }
+
+  &__txt {
+    font-size: 1rem;
+    margin: 1rem 0;
+  }
+
+  &__desc {
+    padding: 40px 16px 0px;
+    display: flex;
+    flex-direction: column;
+  }
+  &__b {
+    align-self: flex-start;
+  }
+
+  &__img {
+    max-width: 500px;
+    width: 500px;
+    height: 500px;
+    margin-right: 3rem;
+
+    & img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
   }
 }
 
-@media (max-width: 1600px) {
-  .productsPage {
-    grid-template-columns: clamp(13rem, 20vw, 20rem) minmax(10px, 1fr);
+@media (max-width: 1000px) {
+  .prod {
+    flex-direction: column;
+    padding: 0;
+
+    &__img {
+      margin: 0;
+      margin-bottom: 3rem;
+    }
   }
 }
 
-@media (max-width: 1110px) {
-  .productsPage {
-    grid-template-columns: minmax(10px, 1fr);
+@media (max-width: 500px) {
+  .prod {
+    &__img {
+      height: 300px;
+      width: 300px;
+    }
+    &__title {
+      font-size: 2rem;
+    }
   }
 }
 
-@media (max-width: 799px) {
-  .productsPage {
-    padding-top: 2rem;
+@media (max-width: 320px) {
+  .prod {
+    &__img {
+      height: 200px;
+      width: 200px;
+    }
+    &__title {
+      font-size: 1.5rem;
+    }
   }
 }
 </style>

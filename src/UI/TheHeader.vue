@@ -1,44 +1,86 @@
 <template>
   <header>
-    <nav class="nav" :class="{ nn: $route.path.includes('account') }">
+    <nav
+      class="nav"
+      :class="{
+        nn:
+          $route.path.includes('account') ||
+          $route.path.includes('auth') ||
+          $route.path.includes('new'),
+      }"
+    >
       <div class="nav__info">
-        <a class="nav__link nav__link--active" href="#">Chat with us</a>
+        <router-link to="/contact" class="nav__link nav__link--active"
+          >Chat with us</router-link
+        >
         <p class="nav__contact">+420 336 775 664</p>
         <p class="nav__contact">info@fresnesecom.com</p>
       </div>
       <div class="nav__links">
-        <a href="#" class="nav__link nav__link--active">Blog</a>
-        <a href="#" class="nav__link nav__link--active">About Us</a>
-        <a href="#" class="nav__link nav__link--active">Careers</a>
+        <router-link to="/posts" class="nav__link nav__link--active"
+          >Posts</router-link
+        >
+        <a href="#" class="nav__link nav__link--notActive">About Us</a>
+        <a href="#" class="nav__link nav__link--notActive">Careers</a>
       </div>
     </nav>
     <div class="head">
       <div
         class="head__logo"
-        :class="{ log: $route.path.includes('account') }"
+        :class="{
+          log:
+            $route.path.includes('account') ||
+            $route.path.includes('auth') ||
+            $route.path.includes('new'),
+        }"
         @click="move"
       >
         Freshnesecom
       </div>
-      <div v-if="!$route.path.includes('account')" class="head__categories">
-        <label class="head__label head__label--select" for="select">
+      <div
+        v-if="
+          !$route.path.includes('account') &&
+            !$route.path.includes('new') &&
+            !$route.path.includes('auth')
+        "
+        class="head__categories"
+      >
+        <!-- <label class="head__label head__label--select" for="select">
           <select id="select">
             <option value="value1"> 1</option>
             <option value="value2" selected>All categories</option>
             <option value="value3">3</option>
           </select>
-        </label>
+        </label> -->
 
         <label class="head__label">
-          <input type="text" placeholder="Search Products,categories&hellip;" />
+          <input
+            type="text"
+            placeholder="Search Products"
+            v-model="search"
+            @blur="hide"
+            @focus="toggle = true"
+          />
           <div class="head__search">
             <img src="../assets/search-outline.svg" alt="search icon" />
           </div>
+          <ul class="head__foundProducts" v-if="prod.length > 0 && toggle">
+            <li v-for="p in prod.slice(0, 5)" :key="p.id" :data-id="p.id">
+              <router-link @click="kkk" :to="`/product/${p.id}`"
+                >{{ p.title }}
+              </router-link>
+            </li>
+          </ul>
         </label>
       </div>
       <div
         class="head__icons"
-        :class="{ acc: $route.path.includes('account') }"
+        :class="{
+          acc:
+            $route.path.includes('account') ||
+            $route.path.includes('auth') ||
+            $route.path.includes('new'),
+        }"
       >
         <div class="head__icon" @click="account">
           <img
@@ -62,7 +104,28 @@ export default {
   data() {
     return {
       showCart: false,
+      search: "",
+      prod: [],
+      toggle: false,
     };
+  },
+
+  watch: {
+    search(val) {
+      let ti = setTimeout(() => {
+        if (val === this.search) {
+          if (val !== "") {
+            this.prod = this.$store.getters["products"].filter((el) =>
+              el.title.includes(val)
+            );
+          }
+
+          console.log(this.prod);
+        } else {
+          clearTimeout(ti);
+        }
+      }, 1000);
+    },
   },
 
   computed: {
@@ -77,8 +140,15 @@ export default {
     move() {
       this.$router.push("/");
     },
+
+    kkk() {
+      this.search = "";
+    },
     account() {
       this.$router.push("/auth");
+    },
+    hide() {
+      setTimeout(() => (this.toggle = false), 1000);
     },
   },
 };
@@ -108,6 +178,42 @@ header {
 
   padding: 1.5rem 3rem;
 
+  &__foundProducts {
+    position: absolute;
+    /* bottom: -329%; */
+    top: 114%;
+    left: 0;
+
+    z-index: 10;
+    list-style: none;
+    /* height: 100%; */
+    height: min-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    border-radius: 12px;
+    border: 1px solid #d1d1d1;
+    background: #f9f9f9;
+    border-top: none;
+    padding: 0 0.5rem;
+    padding-top: 0.5rem;
+
+    & li {
+      margin-bottom: 0.5rem;
+
+      & a {
+        color: #151515;
+        text-decoration: none;
+        transition: color 0.5s;
+
+        &:hover {
+          color: #6a983c;
+        }
+      }
+    }
+  }
+
   &__categories {
     background: #f9f9f9;
     display: flex;
@@ -117,6 +223,7 @@ header {
     border: 1px solid #d1d1d1;
     padding: 0 0.5rem;
     width: min-content;
+    position: relative;
     & input,
     & select {
       border: none;
@@ -138,7 +245,7 @@ header {
       white-space: nowrap;
       overflow: hidden;
       width: 16.3rem;
-      width: clamp(11rem, 20vw, 16.3rem);
+      width: clamp(11rem, 40vw, 35.3rem);
       font-size: 14px;
     }
 
@@ -284,6 +391,9 @@ header {
     display: flex;
     gap: 2rem;
     align-items: center;
+    & .router-link-exact-active {
+      color: #c7522d;
+    }
   }
 
   &__contact,
@@ -298,12 +408,19 @@ header {
     text-decoration: none;
     color: #46760a;
     transition: all 0.5s ease;
+    user-select: none;
 
     &:hover {
       color: #c8deb3;
     }
 
-    &--active {
+    &--notActive {
+      color: #303030;
+      cursor: not-allowed;
+
+      &:hover {
+        color: #303030;
+      }
     }
   }
 }

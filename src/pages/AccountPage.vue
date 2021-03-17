@@ -33,9 +33,7 @@
             placeholder="Tell us about yourself"
             v-model="bio"
           ></textarea> </label
-        ><base-button :isBtn="true" mode="secondary" @click="updateData"
-          >Update
-        </base-button>
+        ><base-button :isBtn="true" mode="secondary">Update </base-button>
       </div>
       <div class="account__picture">
         <div class="account__img">
@@ -74,6 +72,7 @@ export default {
     };
   },
   async created() {
+      window.scrollTo(0, 0);
     await this.$store.dispatch("loadUser", this.userid);
     for (let prop of Object.keys(this.user)) {
       this[prop] = this.user[prop];
@@ -100,7 +99,6 @@ export default {
       }
     },
     async updateData() {
-      console.log(1);
       await this.$store.dispatch("updateUser", {
         user: {
           ...this.user,

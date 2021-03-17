@@ -1,12 +1,15 @@
 <template>
-  <section class="blog">
+  <section class="blog" v-if="!isLoading">
     <div class="blog__head">
-      <h3>Read our Blog posts</h3>
-      <base-button to="/" mode="flat">Go to Blog</base-button>
+      <h3 v-if="posts.length !== 0">Read our Blog posts</h3>
+      <h3 v-else>No data access,just template</h3>
+      <base-button to="/posts" mode="flat">Go to Blog</base-button>
     </div>
-    <div class="posts">
+    <div class="posts" v-if="posts.length !== 0">
       <div
         class="posts__main"
+        @click="goToPost"
+        :data-postid="posts[0].id"
         :style="{
           backgroundImage:
             'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(' +
@@ -14,9 +17,11 @@
             ')',
         }"
       >
-        <span class="posts__badge">{{ posts[0].tag }}</span>
+        <span class="posts__badge">{{ posts[0].tag[0] }}</span>
         <div class="posts__info">
-          <div class="posts__header">{{ posts[0].title }}</div>
+          <div class="posts__header">
+            {{ posts[0].title }}
+          </div>
           <div class="posts__data">
             <div class="posts__img">
               <img
@@ -30,15 +35,21 @@
           </div>
         </div>
       </div>
-      <div class="posts__secondary">
+      <div
+        class="posts__secondary"
+        @click="goToPost"
+        :data-postid="posts[1].id"
+      >
         <div class="posts__pic">
           <img :src="posts[1].postImg" loading="lazy" alt="post picture" />
         </div>
         <div class="posts__info">
           <span class="posts__badge posts__badge--block">{{
-            posts[1].tag
+            posts[1].tag[0]
           }}</span>
-          <div class="posts__header">{{ posts[1].title }}</div>
+          <div class="posts__header">
+            {{ posts[1].title }}
+          </div>
           <div class="posts__data">
             <p class="posts__details">{{ posts[1].author }}</p>
             <p class="posts__details">{{ posts[1].postedData }}</p>
@@ -46,7 +57,92 @@
         </div>
       </div>
       <div class="posts__other">
-        <div class="post" v-for="p in posts.slice(2)" :key="p.title">
+        <div
+          class="post"
+          @click="goToPost"
+          v-for="p in posts.slice(2)"
+          :key="p.title"
+          :data-postid="p.id"
+        >
+          <div class="posts__info">
+            <div class="posts__header">{{ p.title }}</div>
+            <div class="posts__data">
+              <p class="posts__details">{{ p.author }}</p>
+              <p class="posts__details">{{ p.postedData }}</p>
+            </div>
+          </div>
+          <div
+            class="posts__picture"
+            :style="{
+              backgroundImage:
+                'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(' +
+                p.postImg +
+                ')',
+            }"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="posts" v-else>
+      <div
+        class="posts__main"
+        @click="goToPost"
+        :data-postid="backPosts[0].id"
+        :style="{
+          backgroundImage:
+            'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(' +
+            posts[0].postImg +
+            ')',
+        }"
+      >
+        <span class="posts__badge">{{ backPosts[0].tag[0] }}</span>
+        <div class="posts__info">
+          <div class="posts__header">
+            {{ backPosts[0].title }}
+          </div>
+          <div class="posts__data">
+            <div class="posts__img">
+              <img
+                :src="backPosts[0].authorAvatar"
+                loading="lazy"
+                alt="author Avatar"
+              />
+            </div>
+            <p class="posts__details">{{ backPosts[0].author }}</p>
+            <p class="posts__details">{{ backPosts[0].postedData }}</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="posts__secondary"
+        @click="goToPost"
+        :data-postid="backPosts[1].id"
+      >
+        <div class="posts__pic">
+          <img :src="backPosts[1].postImg" loading="lazy" alt="post picture" />
+        </div>
+        <div class="posts__info">
+          <span class="posts__badge posts__badge--block">{{
+            backPosts[1].tag[0]
+          }}</span>
+          <div class="posts__header">
+            {{ backPosts[1].title }}
+          </div>
+          <div class="posts__data">
+            <p class="posts__details">{{ backPosts[1].author }}</p>
+            <p class="posts__details">{{ backPosts[1].postedData }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="posts__other">
+        <div
+          class="post"
+          @click="goToPost"
+          v-for="p in backPosts.slice(2)"
+          :key="p.title"
+          :data-postid="p.id"
+        >
           <div class="posts__info">
             <div class="posts__header">{{ p.title }}</div>
             <div class="posts__data">
@@ -67,6 +163,7 @@
       </div>
     </div>
   </section>
+  <the-loader v-if="isLoading"></the-loader>
 </template>
 
 <script>
@@ -79,7 +176,7 @@ import p5 from "../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg";
 export default {
   data() {
     return {
-      posts: [
+      backPosts: [
         {
           title:
             "Our chef tips for a great and tasty dinner realy in 20 minutes",
@@ -123,7 +220,26 @@ export default {
           postImg: p3,
         },
       ],
+      isLoading: false,
     };
+  },
+  async created() {
+    this.isLoading = true;
+    await this.$store.dispatch("getPosts");
+    this.isLoading = false;
+  },
+  computed: {
+    posts() {
+      return this.$store.getters["mainPagePosts"];
+    },
+  },
+
+  methods: {
+    goToPost(e) {
+      let t = e.target.closest("[data-postid]");
+      const id = t.dataset.postid;
+      this.$router.push(`/posts/${id}`);
+    },
   },
 };
 </script>
@@ -169,6 +285,11 @@ export default {
     &__secondary {
       display: flex;
       flex-direction: column;
+
+      & .posts__pic {
+        max-height: 400px;
+        cursor: pointer;
+      }
     }
 
     &__other {
@@ -177,6 +298,11 @@ export default {
       gap: 1rem;
       max-width: 32rem;
       justify-self: center;
+
+      & .post {
+        padding: 0;
+        padding-right: 3rem;
+      }
     }
 
     &__picture {
@@ -189,6 +315,7 @@ export default {
       height: clamp(98px, 10vw, 8rem);
       justify-self: end;
       transition: filter 0.5s;
+      cursor: pointer;
 
       &:hover {
         filter: brightness(50%);
@@ -209,7 +336,7 @@ export default {
       & img {
         //height: 100%;
         width: 100%;
-        height: auto;
+        height: 100%;
         object-fit: cover;
         vertical-align: bottom;
       }
@@ -256,6 +383,7 @@ export default {
     &__header {
       font-weight: 600;
       font-size: clamp(0.8rem, calc(0.6132rem + 0.934vw), 1.4rem);
+      cursor: pointer;
 
       line-height: clamp(1.6rem, calc(0.6132rem + 0.934vw), 33px);
       text-align: start;
@@ -272,10 +400,11 @@ export default {
 
       overflow: hidden;
       border-radius: 50%;
+      background: white;
 
       & img {
         width: 100%;
-        height: auto;
+        height: 100%;
         object-fit: cover;
       }
     }
