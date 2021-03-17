@@ -8,7 +8,7 @@
         Load Picture
         <input type="file" accept="image" @change="getImage" />
         <div v-if="postImg !== ''" class="imageB">
-          <img :src="postImg" alt="preview of image" />
+          <img width="200" height='200' :src="postImg" alt="preview of image" />
         </div>
       </label>
       <label>

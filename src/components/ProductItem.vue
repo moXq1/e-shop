@@ -6,7 +6,7 @@
         <div class="product__placeholder">
           <div class="product__activity"></div>
         </div>
-        <img v-if="img" :src="img" alt="photo of product" @load="loadImg" />
+        <img v-if="img" :src="img" width="200" height='200' alt="photo of product" @load="loadImg" />
       </div>
       <div class="product__info">
         <h3 class="product__title">{{ title }}</h3>

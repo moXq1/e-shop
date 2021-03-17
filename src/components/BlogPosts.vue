@@ -1,5 +1,5 @@
 <template>
-  <section class="blog" v-if="!isLoading">
+  <section v-blogs class="blog" v-if="!isLoading">
     <div class="blog__head">
       <h3 v-if="posts.length !== 0">Read our Blog posts</h3>
       <h3 v-else>No data access,just template</h3>
@@ -25,6 +25,8 @@
           <div class="posts__data">
             <div class="posts__img">
               <img
+                width="100"
+                height="100"
                 :src="posts[0].authorAvatar"
                 loading="lazy"
                 alt="author Avatar"
@@ -41,7 +43,13 @@
         :data-postid="posts[1].id"
       >
         <div class="posts__pic">
-          <img :src="posts[1].postImg" loading="lazy" alt="post picture" />
+          <img
+            :src="posts[1].postImg"
+            width="200"
+            height="200"
+            loading="lazy"
+            alt="post picture"
+          />
         </div>
         <div class="posts__info">
           <span class="posts__badge posts__badge--block">{{
@@ -92,7 +100,7 @@
         :style="{
           backgroundImage:
             'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(' +
-            posts[0].postImg +
+            backPosts[0].postImg +
             ')',
         }"
       >
@@ -104,6 +112,8 @@
           <div class="posts__data">
             <div class="posts__img">
               <img
+                width="100"
+                height="100"
                 :src="backPosts[0].authorAvatar"
                 loading="lazy"
                 alt="author Avatar"
@@ -120,7 +130,13 @@
         :data-postid="backPosts[1].id"
       >
         <div class="posts__pic">
-          <img :src="backPosts[1].postImg" loading="lazy" alt="post picture" />
+          <img
+            width="200"
+            height="200"
+            :src="backPosts[1].postImg"
+            loading="lazy"
+            alt="post picture"
+          />
         </div>
         <div class="posts__info">
           <span class="posts__badge posts__badge--block">{{
@@ -173,7 +189,10 @@ import p2 from "../assets/brooke-lark-jUPOXXRNdcA-unsplash.jpg";
 import p3 from "../assets/brooke-lark-M4E7X3z80PQ-unsplash.jpg";
 import p4 from "../assets/dan-gold-4_jhDO54BYg-unsplash.jpg";
 import p5 from "../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg";
+
+import blogs from "../directives/blogs.js";
 export default {
+  directives: { blogs },
   data() {
     return {
       backPosts: [
@@ -224,9 +243,10 @@ export default {
     };
   },
   async created() {
-    this.isLoading = true;
-    await this.$store.dispatch("getPosts");
-    this.isLoading = false;
+    console.log(this.posts);
+    // this.isLoading = true;
+    // await this.$store.dispatch("getPosts");
+    // this.isLoading = false;
   },
   computed: {
     posts() {

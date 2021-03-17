@@ -8,9 +8,15 @@
               class="socials__link"
               href="https://www.facebook.com"
               target="_blank"
+              rel="noopener" 
             >
               <div class="socials__wrap">
-                <img src="../assets/logo-facebook.svg" alt="facebook logo" />
+                <img
+                  width="20"
+                  height="20"
+                  src="../assets/logo-facebook.svg"
+                  alt="facebook logo"
+                />
               </div>
             </a>
           </li>
@@ -19,9 +25,15 @@
               class="socials__link"
               href="https://www.twitter.com"
               target="_blank"
+              rel="noopener" 
             >
               <div class="socials__wrap">
-                <img src="../assets/logo-twitter.svg" alt="twitter logo" />
+                <img
+                  width="20"
+                  height="20"
+                  src="../assets/logo-twitter.svg"
+                  alt="twitter logo"
+                />
               </div>
             </a>
           </li>
@@ -30,9 +42,15 @@
               class="socials__link"
               href="https://www.youtube.com"
               target="_blank"
+              rel="noopener" 
             >
               <div class="socials__wrap">
-                <img src="../assets/logo-youtube.svg" alt="youtube logo" />
+                <img
+                  width="20"
+                  height="20"
+                  src="../assets/logo-youtube.svg"
+                  alt="youtube logo"
+                />
               </div>
             </a>
           </li>
@@ -41,9 +59,15 @@
               class="socials__link"
               href="https://www.instagram.com"
               target="_blank"
+              rel="noopener" 
             >
               <div class="socials__wrap">
-                <img src="../assets/logo-instagram.svg" alt="instagram logo" />
+                <img
+                  width="20"
+                  height="20"
+                  src="../assets/logo-instagram.svg"
+                  alt="instagram logo"
+                />
               </div>
             </a>
           </li>
@@ -52,9 +76,15 @@
               class="socials__link"
               href="https://www.linkedin.com/"
               target="_blank"
+              rel="noopener" 
             >
               <div class="socials__wrap">
-                <img src="../assets/logo-linkedin.svg" alt="linkedin logo" />
+                <img
+                  width="20"
+                  height="20"
+                  src="../assets/logo-linkedin.svg"
+                  alt="linkedin logo"
+                />
               </div>
             </a>
           </li>

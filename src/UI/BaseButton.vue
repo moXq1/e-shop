@@ -4,7 +4,7 @@
     <span class="backdrop">
       <slot></slot>
       <div class="forward">
-        <img
+        <img width="20" height='20'
           src="../assets/chevron-forward-outline.svg"
           alt="discover arrow icon"
         />

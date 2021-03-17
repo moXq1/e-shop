@@ -60,8 +60,10 @@
           <span>Total Price:</span> <strong>USD {{ total }} </strong>
         </div>
         <div class="cart__checkout">
-          <base-button to="/booking" mode="secondary">Check out</base-button>
-          <base-button :isBtn="false" @click.prevent="closeCart"
+          <base-button :isBtn="true" mode="secondary" @click="moveTo"
+            >Check out</base-button
+          >
+          <base-button :isBtn="true" @click.prevent="closeCart"
             >Back to Shopping</base-button
           >
         </div>
@@ -95,6 +97,10 @@ export default {
   emits: ["close"],
   methods: {
     closeCart() {
+      this.$emit("close");
+    },
+    moveTo() {
+      this.$router.push("/booking");
       this.$emit("close");
     },
     removeFromCart(e) {
@@ -328,6 +334,7 @@ export default {
   .cart {
     left: 0;
     width: 100vw;
+    height: 100vh;
     right: 0;
   }
 }

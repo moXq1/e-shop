@@ -15,7 +15,7 @@
           <div class="review__placeholder">
             <div class="activity"></div>
           </div>
-          <img :src="r.photo" alt="photo of reviewer" @load="loadImg" />
+          <img width="100" height='100' :src="r.photo" alt="photo of reviewer" @load="loadImg" />
         </div>
       </div>
     </section>

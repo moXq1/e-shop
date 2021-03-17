@@ -1,7 +1,7 @@
 <template>
   <section class="prod">
     <div class="prod__img">
-      <img :src="prod.img" alt="product img" />
+      <img width="200" height='200' :src="prod.img" alt="product img" />
     </div>
     <div class="prod__info">
       <base-button class="prod__b" mode="flat" to="/products"

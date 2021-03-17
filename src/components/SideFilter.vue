@@ -33,10 +33,10 @@
           />
           <div class="stars">
             <span class="filter__img" v-for="m in 5 - i" :key="m"
-              ><img src="../assets/star.svg" alt="filled Star"
+              ><img width="20" height='20' src="../assets/star.svg" alt="filled Star"
             /></span>
             <span class="filter__img filter__img--grey" v-for="m in i" :key="m"
-              ><img src="../assets/star-outline.svg" alt="outline Star"
+              ><img width="20" height='20' src="../assets/star-outline.svg" alt="outline Star"
             /></span>
           </div>
         </label>

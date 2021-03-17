@@ -1,7 +1,7 @@
 <template>
   <article class="post" v-if="post && !isLoading">
     <div class="post__img">
-      <img :src="post.postImg" alt="Post image" />
+      <img width="200" height='200' :src="post.postImg" alt="Post image" />
     </div>
 
     <h3 class="post__title">{{ post.title }}</h3>
@@ -21,8 +21,8 @@
     </div>
     <div class="post__content" v-html="markdown"></div>
   </article>
-  <p v-if='!post && !isLoading'>Cannot load Post</p>
-  <the-loader v-if='isLoading'></the-loader>
+  <p v-if="!post && !isLoading">Cannot load Post</p>
+  <the-loader v-if="isLoading"></the-loader>
 </template>
 
 <script>
@@ -36,14 +36,14 @@ export default {
       );
       const respData = await resp.json();
       this.$store.dispatch("setPost", respData);
-        this.isLoading = false;
+      this.isLoading = false;
     }
   },
   props: ["id"],
-  data(){
-    return{
-      isLoading:false
-    }
+  data() {
+    return {
+      isLoading: false,
+    };
   },
   computed: {
     post() {

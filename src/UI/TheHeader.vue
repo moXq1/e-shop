@@ -62,7 +62,7 @@
             @focus="toggle = true"
           />
           <div class="head__search">
-            <img src="../assets/search-outline.svg" alt="search icon" />
+            <img width='20' height='20' src="../assets/search-outline.svg" alt="search icon" />
           </div>
           <ul class="head__foundProducts" v-if="prod.length > 0 && toggle">
             <li v-for="p in prod.slice(0, 5)" :key="p.id" :data-id="p.id">
@@ -83,7 +83,7 @@
         }"
       >
         <div class="head__icon" @click="account">
-          <img
+          <img  width='20' height='20'
             :class="{ logged: loggedIn }"
             src="../assets/person-outline.svg"
             alt="person icon"
@@ -91,7 +91,7 @@
         </div>
         <div class="head__icon head__icon--count" @click="showCart = true">
           <div v-if="count > 0" class="head__count">{{ count }}</div>
-          <img src="../assets/basket-outline.svg" alt="basket icon" />
+          <img  width='20' height='20' src="../assets/basket-outline.svg" alt="basket icon" />
         </div>
       </div>
     </div>
