@@ -17,13 +17,11 @@ export default {
   },
   actions: {
     async updateUser(context, payload) {
-      const resp = await fetch(
-        `https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/users/${payload.id}.json`,
-        {
-          method: "PUT",
-          body: JSON.stringify(payload.user),
-        }
-      );
+      let url = context.rootGetters.dbUrl;
+      const resp = await fetch(`${url}/users/${payload.id}.json`, {
+        method: "PUT",
+        body: JSON.stringify(payload.user),
+      });
 
       if (!resp.ok) {
         throw new Error("failed to update data");
@@ -41,12 +39,12 @@ export default {
     async loadUser(context, payload) {
       const savedUser = localStorage.getItem("user");
 
+      let url = context.rootGetters.dbUrl;
+
       let data;
 
       if (!savedUser) {
-        const resp = await fetch(
-          `https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/users/${payload}.json`
-        );
+        const resp = await fetch(`${url}/users/${payload}.json`);
 
         data = await resp.json();
         localStorage.setItem("user", JSON.stringify(data));

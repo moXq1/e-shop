@@ -96,18 +96,18 @@
       <div
         class="posts__main"
         @click="goToPost"
-        :data-postid="backPosts[0].id"
+        :data-postid="backPosts[1].id"
         :style="{
           backgroundImage:
             'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(' +
-            backPosts[0].postImg +
+            backPosts[1].postImg +
             ')',
         }"
       >
-        <span class="posts__badge">{{ backPosts[0].tag[0] }}</span>
+        <span class="posts__badge">{{ backPosts[1].tag[0] }}</span>
         <div class="posts__info">
           <div class="posts__header">
-            {{ backPosts[0].title }}
+            {{ backPosts[1].title }}
           </div>
           <div class="posts__data">
             <div class="posts__img">
@@ -119,35 +119,35 @@
                 alt="author Avatar"
               />
             </div>
-            <p class="posts__details">{{ backPosts[0].author }}</p>
-            <p class="posts__details">{{ backPosts[0].postedData }}</p>
+            <p class="posts__details">{{ backPosts[1].author }}</p>
+            <p class="posts__details">{{ backPosts[1].postedData }}</p>
           </div>
         </div>
       </div>
       <div
         class="posts__secondary"
         @click="goToPost"
-        :data-postid="backPosts[1].id"
+        :data-postid="backPosts[0].id"
       >
         <div class="posts__pic">
           <img
             width="200"
             height="200"
-            :src="backPosts[1].postImg"
+            :src="backPosts[0].postImg"
             loading="lazy"
             alt="post picture"
           />
         </div>
         <div class="posts__info">
           <span class="posts__badge posts__badge--block">{{
-            backPosts[1].tag[0]
+            backPosts[0].tag[0]
           }}</span>
           <div class="posts__header">
-            {{ backPosts[1].title }}
+            {{ backPosts[0].title }}
           </div>
           <div class="posts__data">
-            <p class="posts__details">{{ backPosts[1].author }}</p>
-            <p class="posts__details">{{ backPosts[1].postedData }}</p>
+            <p class="posts__details">{{ backPosts[0].author }}</p>
+            <p class="posts__details">{{ backPosts[0].postedData }}</p>
           </div>
         </div>
       </div>

@@ -11,6 +11,11 @@ const store = createStore({
     user: userModule,
     blog: blogModule,
   },
+  getters: {
+    dbUrl() {
+      return "https://vue-http-demo-3c75b-default-rtdb.firebaseio.com";
+    },
+  },
 });
 
 export default store;

@@ -35,9 +35,10 @@ export default {
     },
 
     async addPost(context, payload) {
+      let url = context.rootGetters.dbUrl;
       try {
         const res = await fetch(
-          `https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/posts.json?auth=${context.rootGetters.token}`,
+          `${url}/posts.json?auth=${context.rootGetters.token}`,
           {
             method: "POST",
             body: JSON.stringify(payload),
@@ -53,10 +54,10 @@ export default {
     },
 
     async getPosts(context) {
+      let url = context.rootGetters.dbUrl;
+
       try {
-        const res = await fetch(
-          "https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/posts.json"
-        );
+        const res = await fetch(`${url}/posts.json`);
         if (!res.ok) {
           throw new Error("Failed to load data");
         }
@@ -69,6 +70,7 @@ export default {
     },
 
     async updatePostData(context, payload) {
+      let url = context.rootGetters.dbUrl;
       if (!context.state.posts.length) {
         await context.dispatch("getPosts");
       }
@@ -83,7 +85,7 @@ export default {
         }
 
         await fetch(
-          `https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/posts/${el.id}.json?auth=${context.rootGetters.token}`,
+          `${url}/posts/${el.id}.json?auth=${context.rootGetters.token}`,
           {
             method: "PUT",
             body: JSON.stringify(el),

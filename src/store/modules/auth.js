@@ -74,13 +74,11 @@ export default {
       };
 
       if (payload.mode === "signup") {
-        const res = await fetch(
-          `https://vue-http-demo-3c75b-default-rtdb.firebaseio.com/users/${respData.localId}.json`,
-          {
-            method: "PUT",
-            body: JSON.stringify(user),
-          }
-        );
+        let urlDB = context.rootGetters.dbUrl;
+        const res = await fetch(`${urlDB}/users/${respData.localId}.json`, {
+          method: "PUT",
+          body: JSON.stringify(user),
+        });
         let respD = await res.json();
         if (!resp.ok) {
           throw new Error(respD.message || "Some Error");
