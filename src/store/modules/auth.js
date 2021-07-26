@@ -89,8 +89,6 @@ export default {
       const expirationDate =
         new Date().getTime() + Number(respData.expiresIn) * 100000
 
-      console.log(respData)
-
       localStorage.setItem("token", respData.idToken)
       localStorage.setItem("userId", respData.localId)
       localStorage.setItem("tokenExpiration", expirationDate)
@@ -113,7 +111,6 @@ export default {
 
       const timeLeft = new Date().getTime() - Number(tokenExpiration)
 
-      console.log(timeLeft)
       if (timeLeft < 0) {
         return
       }
